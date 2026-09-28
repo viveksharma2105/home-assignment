@@ -7,6 +7,9 @@ app.use(express.json());
 app.use('/tasks', taskRoutes);
 
 app.use((err, req, res, next) => {
+  if (err.status === 400) {
+    return res.status(400).json({ error: err.message || 'Bad request' });
+  }
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
 });
